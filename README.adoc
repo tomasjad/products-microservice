@@ -1,0 +1,30 @@
+= products-microservice
+
+Following API First approach, server stub classes generated from link:src/main/resources/products-api.yaml[products-api.yaml].
+
+== Build
+
+    mvn clean package
+
+=== with integration tests:
+
+    mvn clean verify
+
+=== create docker image
+
+    docker build -t tomasjadzevicius/products-microservice .
+
+== Run
+
+    docker-compose -f src/test/resources/docker-compose.yaml up -d
+
+http://localhost:8080/swagger-ui.html
+
+== Considerations for improvements
+
+* Request body validation against API schema could be done in a single place and in a generic way (for example, in HTTP request interceptor).
+Calling schema validation directly from controller (inbound port) is not the best approach.
+* link:https://en.wikipedia.org/wiki/HATEOAS[HATOAS] is an important component of link:https://en.wikipedia.org/wiki/Representational_state_transfer[REST] architecture.
+link:https://swagger.io/specification/[OpenAPI specification] provides support for links.
+However, code generation tools (openapi-generator-maven-plugin with spring generation engine in our case) are not mature enough to generate proper stub classes with links support.
+Therefore, custom product links were defined as part of products-api which to some extent pollutes the api itself.

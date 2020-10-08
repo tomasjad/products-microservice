@@ -1,0 +1,162 @@
+openapi: 3.0.3
+info:
+  title: products API
+  description: API description in Markdown.
+  version: 1.0.0
+servers:
+  - url: 'https://api.example.com'
+
+paths:
+  /products:
+    post:
+      tags:
+        - products
+      summary: Creates a new product.
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+      responses:
+        201:
+          description: Created
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        400:
+          description: Bad Request
+
+    get:
+      tags:
+        - products
+      summary: Retrieves a list of all products.
+      operationId: getAllProducts
+      responses:
+        200:
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Products'
+
+
+  /products/{productId}:
+    get:
+      tags:
+        - products
+      summary: Retrieves a product.
+      operationId: getProduct
+      parameters:
+        - $ref: '#/components/parameters/productId'
+      responses:
+        200:
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        404:
+          description: Product not Found
+
+    put:
+      tags:
+        - products
+      summary: Updates the product.
+      operationId: updateProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+      parameters:
+        - $ref: '#/components/parameters/productId'
+      responses:
+        200:
+          description: Modified
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        400:
+          description: Bad Request
+        404:
+          description: Product not Found
+
+    delete:
+      tags:
+        - products
+      summary: Deletes a given product.
+      description: Uses soft deletion.
+      operationId: deleteProduct
+      parameters:
+        - $ref: '#/components/parameters/productId'
+      responses:
+        200:
+          description: Deleted
+        404:
+          description: Product not Found
+
+components:
+  parameters:
+    productId:
+      name: productId
+      in: path
+      description: Id of the product
+      required: true
+      schema:
+        type: string
+
+  schemas:
+    ProductRequest:
+      required:
+        - name
+        - price
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+          minimum: 0
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+        created:
+          type: string
+          format: date
+        _links:
+          $ref: '#/components/schemas/ProductLinks'
+
+    Products:
+      type: object
+      properties:
+        _embedded:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+
+    ProductLinks:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/ProductLink'
+        update:
+          $ref: '#/components/schemas/ProductLink'
+        delete:
+          $ref: '#/components/schemas/ProductLink'
+
+    ProductLink:
+      type: object
+      properties:
+        href:
+          type: string
+

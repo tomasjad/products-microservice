@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  mongodb_container:
+    image: mongo:4.2.10
+    ports:
+      - 27017:27017
+  products_microservice:
+    image: tomasjadzevicius/products-microservice:latest
+    environment:
+      SPRING_DATA_MONGODB_HOST: mongodb_container
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_DATABASE: products
+    ports:
+      - 8080:8080
+

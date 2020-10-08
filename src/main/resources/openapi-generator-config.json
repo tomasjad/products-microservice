@@ -1,0 +1,14 @@
+{
+  "java8": "true",
+  "dateLibrary": "java8",
+  "useBeanValidation": "false",
+  "useTags": "true",
+  "generateApiTests": "false",
+  "generateApiDocumentation": "false",
+  "supportingFiles": "false",
+  "serializableModel": "false",
+  "basePackage": "com.tomasjadzevicius.ch.demo.product",
+  "modelPackage": "com.tomasjadzevicius.ch.demo.product.model",
+  "apiPackage": "com.tomasjadzevicius.ch.demo.product.api",
+  "configPackage": "com.tomasjadzevicius.ch.demo.product.config"
+}
